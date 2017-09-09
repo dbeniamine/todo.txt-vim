@@ -167,22 +167,50 @@ function! todo#Sort()
 endfunction
 
 function! todo#SortDue()
-    silent! %s/\([dD][uU][eE]:\d\{4}\)-\(\d\{2}\)-\(\d\{2}\)/\1\2\3/g
-    " Sort adding entries with due dates add the beginning
-    sort n /[dD][uU][eE]:/
-    " Count the number of lines
-    silent normal gg
-    execute "/[dD][uU][eE]:"
-    let l:first=getpos(".")[1]
-    silent normal N
-    let l:last=getpos(".")[1]
-    let l:diff=l:last-l:first+1
+    " Check how many lines have a due:date on them
+    let l:tasksWithDueDate = 0
+    silent! %global/\v\c<due:\d{4}-\d{2}-\d{2}>/let l:tasksWithDueDate += 1
+    if l:tasksWithDueDate == 0
+        " No tasks with a due:date: No need to modify the buffer at all
+        " Also means we don't need to cater for no matches on searches below
+        return
+    endif
+    " FIXME: There is a small chance that due:\d{8} might legitimately exist in the buffer
+    " We modify due:yyyy-mm-dd to yyyymmdd which would then mean we would alter the buffer
+    " in an unexpected way, altering user data. Not sure how to deal with this at the moment.
+    " I'm going to throw an exception, and if this is a problem we can revisit.
+    silent %global/\v\c<due:\d{8}>/throw "Text matching 'due:\\d\\{8\\}' exists in the buffer, this function cannot sort your buffer"
+    " Turn the due:date from due:yyyy-mm-dd to due:yyyymmdd so we can do a numeric sort
+    silent! %substitute/\v<(due:\d{4})\-(\d{2})\-(\d{2})>/\1\2\3/ei
+    " Sort all the lines with due: by numeric yyyymmdd, they will end up in ascending order at the bottom of the buffer
+    sort in /\<due:/
+    " Determine the line number of the first task with a due:date
+    let l:firstLineWithDue = line("$") - l:tasksWithDueDate + 1
     " Put the sorted lines at the beginning of the file
-    execute ':'.l:first
-    execute ':d'.l:diff
-    silent normal gg
-    silent normal P
-    silent! %s/\([dD][uU][eE]:\d\{4}\)\(\d\{2}\)/\1-\2-/g
+    if l:firstLineWithDue > 1
+        " ...but only if the whole file didn't get sorted.
+        execute l:firstLineWithDue . ",$move 0"
+    endif
+    " Change the due:yyyymmdd back to due:yyyy-mm-dd.
+    silent! %substitute/\v<(due:\d{4})(\d{2})(\d{2})>/\1-\2-\3/ei
+    " Cursor is now on the last task with a due:date
+    " Let's check a global for a user preference on the cursor position.
+    if exists("g:TodoTxtSortDueDateCursorPos")
+        if g:TodoTxtSortDueDateCursorPos ==? "top"
+            normal gg
+        elseif g:TodoTxtSortDueDateCursorPos ==? "lastdue"
+            " Nothing to do
+        elseif g:TodoTxtSortDueDateCursorPos ==? "notoverdue"
+            " Let's try to put the cursor on the first non-overdue task
+            let l:overduePat = todo#GetDateRegexForPastDates()
+            execute ":silent! ?\\v<due:" . l:overduePat . ">?+1"
+        elseif g:TodoTxtSortDueDateCursorPos ==? "bottom"
+            silent normal G
+        endif
+    else
+        " Default: Top of the document
+        normal gg
+    endif
     " TODO: add time sorting (YYYY-MM-DD HH:MM)
 endfunction
 
