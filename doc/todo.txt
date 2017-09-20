@@ -27,6 +27,7 @@ Table of Contents                                          *TodoTxt-Contents* ~
         6.2 Priorities...............................|TodoTxt-Priorities|
         6.3 Dates....................................|TodoTxt-Dates|
         6.4 Done.txt.................................|TodoTxt-Done|
+        6.5 Format...................................|TodoTxt-Format|
 
 ===============================================================================
 1. Release notes                                       *TodoTxt-ReleaseNotes* ~
@@ -284,3 +285,7 @@ Possible values are :
     `<LocalLeader>D` : Move completed tasks to done file, see |TodoTxt-Files|
 
 `<LocalLeader>` is \ by default, so ̀`<LocaLeader>-s` means you type \s
+
+6.5 Format                                                     *TodoTxt-format*
+
+    `<LocalLeader>ff` : Try to fix todo.txt format

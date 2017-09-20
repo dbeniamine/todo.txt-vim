@@ -77,6 +77,13 @@ function! todo#ToggleMarkAsDone(status)
     endif
 endfunction
 
+function! todo#FixFormat()
+    " Remove heading space
+    silent! %s/\C^\s*//
+    " Remove priority from done tasks
+    silent! %s/\C^x (\([A-Z]\)) \(.*\)/x \2 pri:\1/
+endfunction
+
 function! todo#UnMarkAsDone(status)
     if a:status==''
         let pat=''
@@ -84,12 +91,14 @@ function! todo#UnMarkAsDone(status)
         let pat=' '.a:status
     endif
     exec ':s/\C^x\s*\d\{4}-\d\{1,2}-\d\{1,2}'.pat.'\s*//g'
+    silent s/\C\(.*\) pri:\([A-Z]\)/(\2) \1/
 endfunction
 
 function! todo#MarkAsDone(status)
     if a:status!=''
         exec 'normal! I'.a:status.' '
     endif
+    exec ':s/\C^(\([A-Z]\))\(.*\)/\2 pri:\1'
     call todo#PrependDate()
     if (getline(".") =~ '^ ')
         normal! gIx

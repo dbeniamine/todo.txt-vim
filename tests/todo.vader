@@ -460,7 +460,7 @@ Given todo (Tasks):
   Active task
   2017-09-01 Active task with a created date
   (A) Active priority task
-  (A) 2017-09-01 Active priority task with a created date
+  (C) 2017-09-01 Active priority task with a created date
   X 2017-09-18 Not to be confused for a complete task
   XNot to be confused for a complete task
    x 2017-09-18 Rules are not clear on leading whitespace, see comments in test
@@ -476,8 +476,8 @@ Expect todo (Toggled tasks with today as **TODAY**):
   x **TODAY** X 2017-09-18 Not to be confused for a complete task
   x **TODAY** Active task
   x **TODAY** 2017-09-01 Active task with a created date
-  x (A) **TODAY** Active priority task
-  x (A) **TODAY** 2017-09-01 Active priority task with a created date
+  x **TODAY** Active priority task pri:A
+  x **TODAY** 2017-09-01 Active priority task with a created date pri:C
   x **TODAY** X 2017-09-18 Not to be confused for a complete task
   x **TODAY** XNot to be confused for a complete task
   x **TODAY** x 2017-09-18 Rules are not clear on leading whitespace, see comments in test

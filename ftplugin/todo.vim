@@ -71,6 +71,8 @@ if !exists("g:Todo_txt_do_not_map")
 
 " Sort by due: date {{{2
     nnoremap <script> <silent> <buffer> <localleader>sd :call todo#SortDue()<CR>
+" try fix format {{{2
+    nnoremap <script> <silent> <buffer> <localleader>ff :call todo#FixFormat()<CR>
 endif
 
 " Folding {{{1

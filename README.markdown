@@ -259,3 +259,7 @@ Possible values are :
 + `<LocalLeader>X` : Mark all tasks as completed
 + `<LocalLeader>D` : Move completed tasks to done file, see [TodoTxt
 Files](#todotxt-files)
+
+### Format
+
++ `<LocalLeader>ff` : Try to fix todo.txt format
