@@ -480,7 +480,7 @@ Expect todo (Toggled tasks with today as **TODAY**):
   x (A) **TODAY** 2017-09-01 Active priority task with a created date
   x **TODAY** X 2017-09-18 Not to be confused for a complete task
   x **TODAY** XNot to be confused for a complete task
-  Rules are not clear on leading whitespace, see comments in test
+  x **TODAY** x 2017-09-18 Rules are not clear on leading whitespace, see comments in test
   x **TODAY** Tricky incomplete task x 2017-09-18
 
 " function: todo#SortDue() {{{2

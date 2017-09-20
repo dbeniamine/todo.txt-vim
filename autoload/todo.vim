@@ -70,7 +70,7 @@ function! todo#PrependDate()
 endfunction
 
 function! todo#ToggleMarkAsDone(status)
-    if (getline(".") =~ '\C^\s*x\s*\d\{4\}')
+    if (getline(".") =~ '\C^x\s*\d\{4\}')
         :call todo#UnMarkAsDone(a:status)
     else
         :call todo#MarkAsDone(a:status)
@@ -83,7 +83,7 @@ function! todo#UnMarkAsDone(status)
     else
         let pat=' '.a:status
     endif
-    exec ':s/\C^\s*x\s*\d\{4}-\d\{1,2}-\d\{1,2}'.pat.'\s*//g'
+    exec ':s/\C^x\s*\d\{4}-\d\{1,2}-\d\{1,2}'.pat.'\s*//g'
 endfunction
 
 function! todo#MarkAsDone(status)
@@ -91,7 +91,11 @@ function! todo#MarkAsDone(status)
         exec 'normal! I'.a:status.' '
     endif
     call todo#PrependDate()
-    normal! Ix 
+    if (getline(".") =~ '^ ')
+        normal! gIx
+    else
+        normal! Ix 
+    endif
 endfunction
 
 function! todo#MarkAllAsDone()
