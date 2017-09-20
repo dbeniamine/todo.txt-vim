@@ -743,4 +743,35 @@ Then (Is cursor on first non-overdue task?):
 After:
     unlet g:TodoTxtSortDueDateCursorPos
 
+" file: ftplugin/todo.vim {{{1
+
+" function: TodoFoldLevel(lnum) {{{2
+
+Given todo (Tasks):
+  active  due:2050-01-01 task                                     L:01
+  x 2017-09-01 complete task 1                                    L:02
+  x 2017-09-01 complete task 2                                    L:03
+  x 2017-09-01 complete task 3                                    L:04
+  X 2017-09-01 complete task 3                                    L:05
+  active  due:2055-01-01                                          L:06
+  x 2017-09-01 complete task 4                                    L:07
+  active  due:2059-01-01                                          L:08
+  xinvalid due:2059-01-01                                         L:09
+  Xinvalid due:2059-01-01                                         L:10
+  active  due:2059-01-01                                          L:11
+Execute (Check folding):
+  AssertEqual TodoFoldLevel(1),   0
+  AssertEqual TodoFoldLevel(2),   1
+  AssertEqual TodoFoldLevel(3),   1
+  AssertEqual TodoFoldLevel(4),   1
+  AssertEqual TodoFoldLevel(5),   0
+  AssertEqual TodoFoldLevel(6),   0
+  AssertEqual TodoFoldLevel(7),   1
+  AssertEqual TodoFoldLevel(8),   0
+  AssertEqual TodoFoldLevel(9),   0
+  AssertEqual TodoFoldLevel(10),  0
+  AssertEqual TodoFoldLevel(11),  0
+
+"}}}
+
 " vim: tabstop=2 shiftwidth=2 softtabstop=2 expandtab foldmethod=marker
