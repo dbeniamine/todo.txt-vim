@@ -91,7 +91,7 @@ function! TodoFoldLevel(lnum)
     " function we will return 1 for the completed tasks (they will be at the
     " first folding level) while for the other lines 0 will be returned,
     " indicating that they do not fold.
-    return match(getline(a:lnum),'^[xX]\s.\+$') + 1
+    return match(getline(a:lnum),'\C^x\s') + 1
 endfunction
 
 " TodoFoldText() {{{2
