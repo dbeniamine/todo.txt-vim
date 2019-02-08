@@ -102,7 +102,11 @@ endfunction
 
 function! todo#MarkAsDone(status)
     call todo#CreateNewRecurrence(1)
-    exec ':s/\C^(\([A-Z]\))\(.*\)/\2 pri:\1/e'
+    if get(g:, 'TodoTxtStripDoneItemPriority', 0)
+        exec ':s/\C^(\([A-Z]\))\(.*\)/\2/e'
+    else
+        exec ':s/\C^(\([A-Z]\))\(.*\)/\2 pri:\1/e'
+    endif
     if a:status!=''
         exec 'normal! I'.a:status.' '
     endif
