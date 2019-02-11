@@ -328,6 +328,14 @@ following to your vimrc:
 
 `<LocalLeader>` is \ by default, so ̀`<LocaLeader>-s` means you type \s
 
+When you mark an item with a priority as done, it is assigned a priority tag
+like `pri:A` so that the priority can be restored if the item is toggled back
+to undone. If you don't want the tags showing up in your done file, you can
+disable this behavior by setting the following global variable:
+>
+    let g:TodoTxtStripDoneItemPriority=1
+<
+
 7.5 Format                                                     *TodoTxt-format*
 
     `<LocalLeader>ff` : Try to fix todo.txt format

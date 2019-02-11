@@ -301,6 +301,13 @@ following to your vimrc:
 + `<LocalLeader>D` : Move completed tasks to done file, see [TodoTxt
 Files](#todotxt-files)
 
+When you mark an item with a priority as done, it is assigned a priority tag
+like `pri:A` so that the priority can be restored if the item is toggled back
+to undone. If you don't want the tags showing up in your done file, you can
+disable this behavior by setting the following global variable:
+
+    let g:TodoTxtStripDoneItemPriority=1
+
 ### Format
 
 + `<LocalLeader>ff` : Try to fix todo.txt format
